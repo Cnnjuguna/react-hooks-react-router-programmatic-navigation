@@ -15,13 +15,30 @@ function Login({ setIsLoggedIn }) {
     });
   }
 
+  function onLogin(user) {
+    // Maybe store user data in state or localStorage
+
+    // For now, let's just log the user data to the console
+    console.log("User logged in:", user);
+
+    // Set the user as logged in
+    setIsLoggedIn(true);
+
+    history.push("/home");
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
 
-    setIsLoggedIn(true);
-
-    // after logging the user in, redirect to the home page!
-    history.push("/");
+    fetch(`http://localhost:3001/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((r) => r.json())
+      .then((user) => onLogin(user)); // Call onLogin with the user data
   }
 
   return (
